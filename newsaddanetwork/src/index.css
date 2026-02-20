@@ -1,18 +1,18 @@
 @import "tailwindcss";
 
-/* BREAKING NEWS MARQUEE ANIMATION */
+/* CONTINUOUS BREAKING NEWS SCROLL */
 
-@keyframes marqueeScroll {
+@keyframes tickerScroll {
   0% {
-    transform: translateX(100%);
+    transform: translateX(0%);
   }
   100% {
-    transform: translateX(-100%);
+    transform: translateX(-50%);
   }
 }
 
-.marquee {
-  display: inline-block;
-  white-space: nowrap;
-  animation: marqueeScroll 60s linear infinite;
+.ticker-wrapper {
+  display: flex;
+  width: max-content;
+  animation: tickerScroll 20s linear infinite;
 }
