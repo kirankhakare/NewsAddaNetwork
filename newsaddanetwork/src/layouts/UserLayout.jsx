@@ -1,6 +1,7 @@
 import Navbar from "../components/common/Navbar";
 import Footer from "../components/common/Footer";
 import BreakingNewsBar from "../components/common/BreakingNewsBar";
+import HeroSlider from "../components/common/HeroSlider";
 import { Outlet } from "react-router-dom";
 
 export default function UserLayout() {
@@ -8,6 +9,7 @@ export default function UserLayout() {
     <>
       <Navbar />
       <BreakingNewsBar />
+      <HeroSlider />
       <br></br>
       <main className="min-h-screen bg-gray-50">
         <Outlet />
