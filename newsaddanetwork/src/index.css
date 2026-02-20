@@ -1,0 +1,18 @@
+@import "tailwindcss";
+
+/* BREAKING NEWS MARQUEE ANIMATION */
+
+@keyframes marqueeScroll {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+.marquee {
+  display: inline-block;
+  white-space: nowrap;
+  animation: marqueeScroll 60s linear infinite;
+}
