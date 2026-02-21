@@ -1,19 +1,55 @@
 import { Link } from "react-router-dom";
-import posts from "../../data/posts.json";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import API from "../../services/api";
 
 export default function Home() {
-  const recentPosts = posts.slice(0, 6);
-  const trendingPosts = posts.slice(0, 4);
 
-  // SEO Title Marathi
-  useEffect(() => {
-    document.title = "न्यूजअड्डा नेटवर्क - ताज्या बातम्या";
-  }, []);
+  const [posts,setPosts] = useState([]);
+
+  // ================= FETCH BLOGS =================
+useEffect(()=>{
+
+  document.title = "न्यूजअड्डा नेटवर्क - ताज्या बातम्या";
+
+  const fetchBlogs = async()=>{
+    try{
+      const res = await API.get("/blogs");
+      setPosts(res.data);
+    }catch(err){
+      console.log(err);
+    }
+  };
+
+  // 👥 VISITOR COUNT ADD (Website open zala ki)
+  const addVisitor = async()=>{
+    try{
+      await API.post("/analytics/visit");
+    }catch(err){
+      console.log(err);
+    }
+  };
+
+  fetchBlogs();
+  addVisitor();
+
+},[]);
+
+  // ================= CATEGORY LABEL MAP =================
+  const categoryLabels = {
+    "govt-schemes":"🏛️ शासकीय योजना",
+    "health":"💚 आरोग्य",
+    "jobs":"💼 रोजगार",
+    "spirituality":"📙 अध्यात्म",
+    "technology":"🧠 तंत्रज्ञान",
+    "info":"ℹ️ अधिक माहिती"
+  };
+
+  const recentPosts = posts.slice(0,6);
+  const trendingPosts = posts.slice(0,4);
 
   return (
     <>
-      {/* HERO SECTION */}
+      {/* HERO */}
       <section className="bg-gradient-to-r from-red-600 to-red-500 text-white py-10 md:py-14">
         <div className="max-w-7xl mx-auto px-4 text-center">
           <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-3">
@@ -28,39 +64,41 @@ export default function Home() {
       {/* MAIN CONTENT */}
       <div className="max-w-7xl mx-auto px-4 py-8 md:py-10 grid lg:grid-cols-3 gap-8">
 
-        {/* LEFT SIDE — BLOG GRID */}
+        {/* BLOG GRID */}
         <div className="lg:col-span-2">
           <h2 className="text-xl md:text-2xl font-bold mb-6 border-l-4 border-red-600 pl-3">
             ताज्या बातम्या
           </h2>
 
           <div className="grid sm:grid-cols-2 gap-5 md:gap-6">
-            {recentPosts.map((post) => (
+
+            {recentPosts.map((post)=>(
               <article
-                key={post.id}
+                key={post._id}
                 className="bg-white rounded-xl shadow hover:shadow-xl transition overflow-hidden group"
               >
                 <div className="relative">
+
                   <img
                     src={post.image}
                     alt={post.title}
                     className="w-full h-40 sm:h-44 md:h-48 object-cover group-hover:scale-105 transition duration-300"
                   />
 
-                  {/* CATEGORY TAG */}
                   <span className="absolute top-3 left-3 bg-red-600 text-white text-xs px-3 py-1 rounded-full">
-                    {post.category}
+                    {categoryLabels[post.category]}
                   </span>
                 </div>
 
                 <div className="p-4 md:p-5">
+
                   <p className="text-xs md:text-sm text-gray-500 mb-2">
-                    {new Date(post.date).toLocaleDateString("mr-IN")}
+                    {new Date(post.createdAt).toLocaleDateString("mr-IN")}
                   </p>
 
                   <h3 className="font-semibold text-base md:text-lg mb-2 line-clamp-2 leading-snug">
                     <Link
-                      to={`/blog/${post.slug}`}
+                      to={`/blog/${post._id}`}
                       className="hover:text-red-600 transition"
                     >
                       {post.title}
@@ -68,32 +106,35 @@ export default function Home() {
                   </h3>
 
                   <p className="text-gray-600 text-sm line-clamp-3">
-                    {post.excerpt}
+                    {post.description}
                   </p>
 
                   <Link
-                    to={`/blog/${post.slug}`}
+                    to={`/blog/${post._id}`}
                     className="inline-block mt-3 text-red-600 font-medium hover:underline text-sm"
                   >
                     पुढे वाचा →
                   </Link>
+
                 </div>
               </article>
             ))}
+
           </div>
         </div>
 
-        {/* RIGHT SIDE — TRENDING SIDEBAR */}
+        {/* TRENDING SIDEBAR */}
         <aside>
           <h2 className="text-lg md:text-xl font-bold mb-5 border-l-4 border-black pl-3">
             लोकप्रिय बातम्या
           </h2>
 
           <div className="space-y-4 md:space-y-5">
-            {trendingPosts.map((post) => (
+
+            {trendingPosts.map((post)=>(
               <Link
-                key={post.id}
-                to={`/blog/${post.slug}`}
+                key={post._id}
+                to={`/blog/${post._id}`}
                 className="flex gap-3 items-center group"
               >
                 <img
@@ -101,11 +142,13 @@ export default function Home() {
                   alt={post.title}
                   className="w-20 h-16 object-cover rounded-md"
                 />
+
                 <p className="text-sm md:text-base font-medium group-hover:text-red-600 line-clamp-2 transition">
                   {post.title}
                 </p>
               </Link>
             ))}
+
           </div>
         </aside>
 

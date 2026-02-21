@@ -1,11 +1,35 @@
+import { useEffect, useState } from "react";
+import API from "../../services/api";
+
 export default function BreakingNewsBar() {
 
-  const headlines = [
-    "तरुणांसाठी नवीन शासकीय योजना जाहीर.",
-    "आरोग्य विभागाकडून नवीन मार्गदर्शक सूचना जारी.",
-    "२०२६ मध्ये तंत्रज्ञान क्षेत्रात मोठे बदल अपेक्षित.",
-    "नवीन शिक्षण धोरणाबाबत महत्त्वाची घोषणा."
-  ];
+  const [headlines,setHeadlines] = useState([]);
+
+  // FETCH BREAKING NEWS FROM BACKEND
+  useEffect(()=>{
+
+    const fetchBreaking = async()=>{
+      try{
+        const res = await API.get("/breaking");
+
+        // only titles extract
+        const titles = res.data.map(item => item.title);
+
+        setHeadlines(titles);
+
+      }catch(err){
+        console.log(err);
+      }
+    };
+
+    fetchBreaking();
+
+  },[]);
+
+  // IF NO DATA
+  if(headlines.length === 0){
+    return null;
+  }
 
   return (
     <div className="bg-red-600 text-white overflow-hidden">
@@ -20,7 +44,7 @@ export default function BreakingNewsBar() {
         <div className="overflow-hidden w-full">
           <div className="ticker-wrapper px-6 py-2 font-semibold whitespace-nowrap">
 
-            {/* DUPLICATE CONTENT FOR SEAMLESS LOOP */}
+            {/* LOOP CONTENT */}
             {[...headlines, ...headlines].map((text, index) => (
               <span key={index} className="mx-10">
                 🔴 {text}
