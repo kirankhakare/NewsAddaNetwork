@@ -24,9 +24,7 @@ export default function Footer() {
           <h3 className="font-semibold mb-3 text-lg">महत्वाचे दुवे</h3>
           <ul className="space-y-2 text-gray-300 text-sm">
             <li><Link to="/about" className="hover:text-red-500">आमच्याबद्दल</Link></li>
-            <li><Link to="/contact" className="hover:text-red-500">संपर्क</Link></li>
-            <li><Link to="/privacy-policy" className="hover:text-red-500">गोपनीयता धोरण</Link></li>
-            <li><Link to="/disclaimer" className="hover:text-red-500">अस्वीकरण</Link></li>
+            <li><Link to="/contactUS" className="hover:text-red-500">संपर्क</Link></li>
           </ul>
         </div>
 

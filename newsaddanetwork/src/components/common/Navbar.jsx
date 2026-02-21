@@ -157,7 +157,7 @@ export default function Navbar() {
               <FaInfoCircle className="text-blue-500"/> आमच्याबद्दल
             </NavLink>
 
-            <NavLink onClick={closeMenu} to="/contact" className="flex items-center gap-3 px-2 py-1 hover:text-red-600">
+            <NavLink onClick={closeMenu} to="/contactUS" className="flex items-center gap-3 px-2 py-1 hover:text-red-600">
               <FaPhoneAlt className="text-green-500"/> संपर्क
             </NavLink>
 

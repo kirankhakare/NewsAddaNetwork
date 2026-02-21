@@ -5,6 +5,8 @@ import AdminLayout from "../layouts/AdminLayout";
 
 /* User Pages */
 import Home from "../pages/user/Home";
+import About from "../pages/user/About";
+import Contact from "../pages/user/Contact";
 import Category from "../pages/user/Category";
 import BlogDetails from "../pages/user/BlogDetails";
 import StaticPages from "../pages/user/StaticPages";
@@ -17,6 +19,7 @@ import EditBlog from "../pages/admin/EditBlog";
 import ManageBlogs from "../pages/admin/ManageBlogs";
 import BreakingNews from "../pages/admin/BreakingNews";
 
+
 export default function AppRoutes() {
   return (
     <BrowserRouter>
@@ -25,6 +28,8 @@ export default function AppRoutes() {
         {/* USER ROUTES */}
         <Route element={<UserLayout />}>
           <Route path="/" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contactUS" element={<Contact />} />
           <Route path="/category/:slug" element={<Category />} />
           <Route path="/blog/:id" element={<BlogDetails />} />
           <Route path="/:type" element={<StaticPages />} />
