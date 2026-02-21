@@ -12,10 +12,8 @@ export default function BreakingNewsBar() {
       try{
         const res = await API.get("/breaking");
 
-        // only titles extract
-        const titles = res.data.map(item => item.title);
-
-        setHeadlines(titles);
+        // ✅ FULL DATA STORE (title + link)
+        setHeadlines(res.data);
 
       }catch(err){
         console.log(err);
@@ -45,10 +43,24 @@ export default function BreakingNewsBar() {
           <div className="ticker-wrapper px-6 py-2 font-semibold whitespace-nowrap">
 
             {/* LOOP CONTENT */}
-            {[...headlines, ...headlines].map((text, index) => (
-              <span key={index} className="mx-10">
-                🔴 {text}
-              </span>
+            {[...headlines, ...headlines].map((item, index) => (
+
+              item.link ? (
+                <a
+                  key={index}
+                  href={item.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mx-10 hover:underline cursor-pointer"
+                >
+                  🔴 {item.title}
+                </a>
+              ) : (
+                <span key={index} className="mx-10">
+                  🔴 {item.title}
+                </span>
+              )
+
             ))}
 
           </div>

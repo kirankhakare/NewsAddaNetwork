@@ -1,10 +1,21 @@
 const BreakingNews = require("../models/BreakingNews");
 
-// ADD BREAKING NEWS
+// ================= ADD BREAKING NEWS =================
 exports.addBreaking = async(req,res)=>{
   try{
 
-    const news = await BreakingNews.create(req.body);
+    let { title, link } = req.body;
+
+    // ✅ AUTO FIX LINK (optional but best)
+    if(link && !link.startsWith("http")){
+      link = "https://" + link;
+    }
+
+    const news = await BreakingNews.create({
+      title,
+      link
+    });
+
     res.json(news);
 
   }catch(err){
@@ -12,7 +23,7 @@ exports.addBreaking = async(req,res)=>{
   }
 };
 
-// GET ALL BREAKING NEWS
+// ================= GET ALL BREAKING NEWS =================
 exports.getBreaking = async(req,res)=>{
   try{
 
@@ -24,7 +35,7 @@ exports.getBreaking = async(req,res)=>{
   }
 };
 
-// DELETE
+// ================= DELETE =================
 exports.deleteBreaking = async(req,res)=>{
   try{
 
@@ -35,12 +46,24 @@ exports.deleteBreaking = async(req,res)=>{
     res.status(500).json(err.message);
   }
 };
+
+// ================= UPDATE BREAKING NEWS =================
 exports.updateBreaking = async(req,res)=>{
   try{
 
+    let { title, link } = req.body;
+
+    // ✅ AUTO FIX LINK
+    if(link && !link.startsWith("http")){
+      link = "https://" + link;
+    }
+
     const updated = await BreakingNews.findByIdAndUpdate(
       req.params.id,
-      { title:req.body.title },
+      {
+        title,
+        link     // 🔥 IMPORTANT ADD
+      },
       { new:true }
     );
 

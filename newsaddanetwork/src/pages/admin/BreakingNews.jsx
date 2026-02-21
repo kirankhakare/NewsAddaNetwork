@@ -4,6 +4,7 @@ import API from "../../services/api";
 export default function BreakingNews(){
 
   const [title,setTitle] = useState("");
+  const [link,setLink] = useState("");   // ✅ NEW LINK STATE
   const [breaking,setBreaking] = useState([]);
   const [editId,setEditId] = useState(null);
 
@@ -29,16 +30,22 @@ export default function BreakingNews(){
 
     try{
 
+      const payload = {
+        title,
+        link   // ✅ SEND LINK ALSO
+      };
+
       if(editId){
         // UPDATE
-        await API.put(`/breaking/${editId}`,{ title });
+        await API.put(`/breaking/${editId}`, payload);
         setEditId(null);
       }else{
         // CREATE
-        await API.post("/breaking",{ title });
+        await API.post("/breaking", payload);
       }
 
       setTitle("");
+      setLink("");     // ✅ RESET LINK
       fetchBreaking();
       alert("Saved Successfully");
 
@@ -58,6 +65,7 @@ export default function BreakingNews(){
   // EDIT CLICK
   const handleEdit = (item)=>{
     setTitle(item.title);
+    setLink(item.link || "");   // ✅ LOAD LINK
     setEditId(item._id);
   };
 
@@ -74,11 +82,20 @@ export default function BreakingNews(){
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
 
+          {/* TITLE INPUT */}
           <input
             value={title}
             placeholder="Enter Breaking News Headline..."
             onChange={(e)=>setTitle(e.target.value)}
             className="w-full p-3 border rounded-lg outline-none focus:ring-2 focus:ring-red-400"
+          />
+
+          {/* ✅ NEW LINK INPUT */}
+          <input
+            value={link}
+            placeholder="Enter Link (optional)..."
+            onChange={(e)=>setLink(e.target.value)}
+            className="w-full p-3 border rounded-lg outline-none focus:ring-2 focus:ring-blue-400"
           />
 
           <button className="bg-red-500 text-white py-3 rounded-lg font-semibold hover:bg-red-600 transition">
@@ -97,6 +114,7 @@ export default function BreakingNews(){
           <thead className="bg-white/50">
             <tr className="text-left text-gray-700">
               <th className="p-4">Headline</th>
+              <th className="p-4">Link</th> {/* ✅ NEW COLUMN */}
               <th className="p-4">Actions</th>
             </tr>
           </thead>
@@ -116,6 +134,11 @@ export default function BreakingNews(){
 
                 <td className="p-4 font-semibold text-gray-800">
                   {item.title}
+                </td>
+
+                {/* ✅ SHOW LINK */}
+                <td className="p-4 text-sm text-blue-600">
+                  {item.link ? item.link : "-"}
                 </td>
 
                 <td className="p-4 flex gap-3">
@@ -148,3 +171,4 @@ export default function BreakingNews(){
     </div>
   );
 }
+
