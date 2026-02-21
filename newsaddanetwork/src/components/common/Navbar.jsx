@@ -24,12 +24,12 @@ export default function Navbar() {
 
   // ✅ Backend synced categories
   const categories = [
-    { name:"शासकीय योजना", path:"/category/govt-schemes", icon:<FaLandmark/>, color:"text-blue-600" },
+    { name:"योजना", path:"/category/govt-schemes", icon:<FaLandmark/>, color:"text-blue-600" },
     { name:"आरोग्य", path:"/category/health", icon:<FaHeartbeat/>, color:"text-green-600" },
     { name:"रोजगार", path:"/category/jobs", icon:<FaBriefcase/>, color:"text-purple-600" },
     { name:"अध्यात्म", path:"/category/spirituality", icon:<FaBook/>, color:"text-yellow-600" },
     { name:"तंत्रज्ञान", path:"/category/technology", icon:<FaMicrochip/>, color:"text-indigo-600" },
-    { name:"अधिक माहिती", path:"/category/info", icon:<FaInfoCircle/>, color:"text-gray-600" },
+    { name:"इतर", path:"/category/info", icon:<FaInfoCircle/>, color:"text-gray-600" },
   ];
 
   return (
@@ -104,7 +104,7 @@ export default function Navbar() {
 
             {/* CONTACT */}
             <NavLink
-              to="/contact"
+              to="/contactUs"
               className={({isActive})=>
                 `flex items-center gap-2 ${
                   isActive

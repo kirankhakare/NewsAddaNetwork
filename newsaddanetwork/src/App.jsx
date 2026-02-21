@@ -1,10 +1,15 @@
 import AppRoutes from "./routes/AppRoutes";
+import ScrollToTop from "./components/common/ScrollToTop";
 
 function App() {
   return (
-    <div className="font-sans bg-gray-50 text-gray-800">
+    <>
+      {/* 🔥 Global Scroll Handler */}
+      <ScrollToTop />
+
+      {/* 🔥 All Routes */}
       <AppRoutes />
-    </div>
+    </>
   );
 }
 
