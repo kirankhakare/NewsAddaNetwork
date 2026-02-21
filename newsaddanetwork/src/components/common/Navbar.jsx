@@ -12,17 +12,14 @@ import {
   FaPhoneAlt,
   FaBars,
   FaTimes,
-  FaChevronDown,
 } from "react-icons/fa";
 
 export default function Navbar() {
 
   const [menuOpen,setMenuOpen] = useState(false);
-  const [catOpen,setCatOpen] = useState(false);
 
   const closeMenu = ()=>{
     setMenuOpen(false);
-    setCatOpen(false);
   };
 
   // ✅ Backend synced categories
@@ -38,7 +35,7 @@ export default function Navbar() {
   return (
     <header className="bg-white/90 backdrop-blur-sm border-b shadow-sm sticky top-0 z-50">
 
-      <div className="max-w-7xl mx-auto px-4 lg:px-8">
+     <div className="w-full px-6 lg:px-10">
 
         <div className="flex justify-between items-center h-16 lg:h-20">
 
@@ -57,7 +54,7 @@ export default function Navbar() {
           </Link>
 
           {/* ================= DESKTOP NAV ================= */}
-          <nav className="hidden md:flex items-center gap-6 lg:gap-8 text-base lg:text-lg font-semibold text-gray-800">
+          <nav className="hidden md:flex items-center gap-5 lg:gap-6 text-base lg:text-lg font-semibold text-gray-800">
 
             {/* HOME */}
             <NavLink
@@ -73,42 +70,23 @@ export default function Navbar() {
               <FaHome/> मुख्यपृष्ठ
             </NavLink>
 
-            {/* CATEGORY DROPDOWN */}
-            <div
-              className="relative"
-              onMouseEnter={()=>setCatOpen(true)}
-              onMouseLeave={()=>setCatOpen(false)}
-            >
-              <button className="flex items-center gap-2 hover:text-red-600">
-                <FaNewspaper/> विभाग
-                <FaChevronDown
-                  className={`text-xs transition ${catOpen?"rotate-180":""}`}
-                />
-              </button>
-
-              <div
-                className={`absolute left-0 top-12 w-64 bg-white border rounded-xl shadow-xl transition-all duration-200 ${
-                  catOpen
-                    ? "opacity-100 translate-y-0 visible"
-                    : "opacity-0 -translate-y-2 invisible"
-                }`}
+            {/* DIRECT CATEGORY LINKS */}
+            {categories.map(cat=>(
+              <NavLink
+                key={cat.path}
+                to={cat.path}
+                className={({isActive})=>
+                  `flex items-center gap-2 ${
+                    isActive
+                      ? `${cat.color} border-b-2 border-red-600 pb-1`
+                      : "hover:text-red-600"
+                  }`
+                }
               >
-                {categories.map(cat=>(
-                  <NavLink
-                    key={cat.path}
-                    to={cat.path}
-                    className={({isActive})=>
-                      `flex items-center gap-3 px-6 py-3 hover:bg-gray-50 ${
-                        isActive ? cat.color : "text-gray-700"
-                      }`
-                    }
-                  >
-                    <span className={cat.color}>{cat.icon}</span>
-                    {cat.name}
-                  </NavLink>
-                ))}
-              </div>
-            </div>
+                <span className={cat.color}>{cat.icon}</span>
+                {cat.name}
+              </NavLink>
+            ))}
 
             {/* ABOUT */}
             <NavLink
@@ -158,37 +136,25 @@ export default function Navbar() {
               <FaHome className="text-red-500"/> मुख्यपृष्ठ
             </NavLink>
 
-            {/* MOBILE CATEGORY TOGGLE */}
-            <button
-              onClick={()=>setCatOpen(!catOpen)}
-              className="flex items-center gap-3 px-2 py-1"
-            >
-              <FaNewspaper/> विभाग
-              <FaChevronDown className={`text-xs ${catOpen?"rotate-180":""}`}/>
-            </button>
-
-            {catOpen && (
-              <div className="pl-6 flex flex-col gap-3">
-                {categories.map(cat=>(
-                  <NavLink
-                    key={cat.path}
-                    to={cat.path}
-                    onClick={closeMenu}
-                    className={({isActive})=>
-                      `flex items-center gap-3 ${
-                        isActive ? cat.color : "hover:text-red-600"
-                      }`
-                    }
-                  >
-                    <span className={cat.color}>{cat.icon}</span>
-                    {cat.name}
-                  </NavLink>
-                ))}
-              </div>
-            )}
+            {/* DIRECT CATEGORY LINKS MOBILE */}
+            {categories.map(cat=>(
+              <NavLink
+                key={cat.path}
+                to={cat.path}
+                onClick={closeMenu}
+                className={({isActive})=>
+                  `flex items-center gap-3 px-2 py-1 ${
+                    isActive ? cat.color : "hover:text-red-600"
+                  }`
+                }
+              >
+                <span className={cat.color}>{cat.icon}</span>
+                {cat.name}
+              </NavLink>
+            ))}
 
             <NavLink onClick={closeMenu} to="/about" className="flex items-center gap-3 px-2 py-1 hover:text-red-600">
-              <FaInfoCircle className="text-blue-500"/> अधिक माहिती
+              <FaInfoCircle className="text-blue-500"/> आमच्याबद्दल
             </NavLink>
 
             <NavLink onClick={closeMenu} to="/contact" className="flex items-center gap-3 px-2 py-1 hover:text-red-600">
@@ -202,3 +168,4 @@ export default function Navbar() {
     </header>
   );
 }
+
